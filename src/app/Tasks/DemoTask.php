@@ -6,24 +6,25 @@
 
 namespace app\Tasks;
 
-
 use app\Utils\LogUtil;
-use Server\CoreBase\Task;
 
-class DemoTask extends Task {
+class DemoTask extends BaseTask {
 
     public function testTask() {
-        $model = $this->loader->model('TaskDataModel', $this);
-        $table = $model->getOne([
-            'id' => 2
-        ]);
+        // 1、操作redis案例  同redis扩展对象API
+        yield $this->redis_pool->getCoroutine()->set('name', 'genedd');
 
-        print_r($table);
+        $data['data'] = 'dadsdf';
+        $data['create_time'] = time();
 
+        // 2、操作mysql案例
+        $model    = $this->loader->model('TaskDataModel', $this);
+        $insertId = yield $model->insert($data);
+
+        $data['id'] = $insertId;
         $logger = LogUtil::getLogger();
-        $logger->info('看书记得返款');
+        $logger->info('Mysql数据信息', $data);
 
-
-        print_r("类型: \r\n");
+        print_r("操作成功: \r\n");
     }
 }

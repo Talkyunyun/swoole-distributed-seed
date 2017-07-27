@@ -19,6 +19,6 @@ $config['log']['graylog']['efficiency_monitor_enable'] = true;
 
 $config['log']['file']['log_max_files'] = 15;
 $config['log']['file']['efficiency_monitor_enable'] = false;
-$config['log']['file']['log_path'] = './runtime/logs/'; // 必须是相对路径
+$config['log']['file']['log_path'] = './log/run/'; // 必须是相对路径
 
 return $config;

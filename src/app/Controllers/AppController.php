@@ -18,14 +18,14 @@ use Server\CoreBase\SwooleException;
 class AppController extends Controller
 {
     /**
-     * @var AppModel
+     * @var TaskDataModel
      */
-    public $AppModel;
+    public $TaskDataModel;
 
     protected function initialization($controller_name, $method_name)
     {
         parent::initialization($controller_name, $method_name);
-        $this->AppModel = $this->loader->model('AppModel', $this);
+        $this->TaskDataModel = $this->loader->model('TaskDataModel', $this);
     }
 
 }

@@ -33,34 +33,34 @@ class BaseModel extends Model {
     }
 
 
-    public function getOne($contidions, $fields = '*', $isResult = true, $orderBy = false, $group = '') {
+    /**
+     * 查询一条记录
+     * @param $contidions
+     * @param string $fields
+     * @param array $orderBy ['id' => 'desc']
+     * @param string $group
+     * @return array
+     */
+    public function getOne($contidions, $fields = '*', $orderBy = false, $group = '') {
         $this->mysql_pool->dbQueryBuilder->select($fields)->from($this->table());
         $this->_setConditions($contidions);
         $this->mysql_pool->dbQueryBuilder->limit(1);
         if (!empty($orderBy) || is_array($orderBy)) {
             $this->mysql_pool->dbQueryBuilder->orderBy($orderBy[0], $orderBy[1]);
         }
-        if ($group) {
+        if (!empty($group)) {
             $this->mysql_pool->dbQueryBuilder->groupBy($group, null);
         }
 
-        //使用协程，发送sql
-        $mySqlCoroutine = $this->mysql_pool->dbQueryBuilder->coroutineSend();
-        if ($isResult) {
-            // 等待查询结果，返回结果
-            $result = yield $mySqlCoroutine;
+        // 使用协程，发送sql
+        $result = yield $this->mysql_pool->dbQueryBuilder->coroutineSend();
 
-            return $result;
-//            return isset($result['result'][0]) ? $result['result'][0] : [];
-        }
-
-        //不等待查询结果，直接返回，通过yield获取结果
-        return $mySqlCoroutine;
+        return isset($result['result'][0]) ? $result['result'][0] : [];
     }
 
 
     /**
-     * 插入一条记录
+     * 插入一条记录 必须 yield
      * @param array $data 二维数组 key:字段名  value: 值
      * @return mixed
      */
@@ -70,13 +70,13 @@ class BaseModel extends Model {
             ->intoColumns(array_keys($data))
             ->intoValues(array_values($data));
 
-        $result = $this->mysql_pool->dbQueryBuilder->coroutineSend();
+        $result = yield $this->mysql_pool->dbQueryBuilder->coroutineSend();
 
         return $result['insert_id'];
     }
 
     /**
-     * 更新记录
+     * 更新记录 yield
      * @param array $data
      * @param array $contidions
      * @return bool
@@ -89,13 +89,13 @@ class BaseModel extends Model {
         }
 
         $this->_setConditions($contidions);
-        $result = $this->mysql_pool->dbQueryBuilder->coroutineSend();
+        $result = yield $this->mysql_pool->dbQueryBuilder->coroutineSend();
 
         return $result['affected_rows'] ? true : false;
     }
 
     /**
-     * 删除记录
+     * 删除记录 yield
      * @param array $contidions
      * @return bool
      */
@@ -103,10 +103,27 @@ class BaseModel extends Model {
         $this->mysql_pool->dbQueryBuilder->delete()->from($this->table());
         $this->_setConditions($contidions);
 
-        $result = $this->mysql_pool->dbQueryBuilder->coroutineSend();
+        $result = yield $this->mysql_pool->dbQueryBuilder->coroutineSend();
 
         return $result['affected_rows'] ? true : false;
     }
+
+    /**
+     * 获取总数
+     * @param $contidions
+     * @return int
+     */
+    public function count($contidions) {
+        $this->mysql_pool->dbQueryBuilder->select('count(*) as count')->from($this->table());
+        $this->_setConditions($contidions);
+        $this->mysql_pool->dbQueryBuilder->limit(1);
+
+        //使用协程，发送sql
+        $result = yield $this->mysql_pool->dbQueryBuilder->coroutineSend();
+
+        return (int)$result['result'][0]['count'];
+    }
+
 
     /**
      * 设置条件,目前只支持一维数组
