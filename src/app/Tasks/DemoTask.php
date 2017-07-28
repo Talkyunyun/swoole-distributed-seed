@@ -27,4 +27,11 @@ class DemoTask extends BaseTask {
 
         print_r("操作成功: \r\n");
     }
+
+
+    public function test() {
+        print_r('操作成功');
+
+        return 11;
+    }
 }

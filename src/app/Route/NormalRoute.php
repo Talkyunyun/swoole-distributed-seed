@@ -32,8 +32,8 @@ class NormalRoute implements IRoute {
     public function handleClientRequest($request) {
         $this->client_data->path = $request->server['path_info'];
         $route = explode('/', $request->server['path_info']);
-        $this->client_data->controller_name = $route[1]??null;
-        $this->client_data->method_name = $route[2]??null;
+        $this->client_data->controller_name = $route[1] ?? null;
+        $this->client_data->method_name = $route[2] ?? null;
     }
 
     /**

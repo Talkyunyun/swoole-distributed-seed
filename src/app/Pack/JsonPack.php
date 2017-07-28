@@ -1,11 +1,12 @@
 <?php
 /**
- * 自定义封装器  TCP  WebSocket
+ * 自定义数据协议  TCP  WebSocket
  * @author: Gene
  */
 
 namespace app\Pack;
 
+use app\Route\NormalRoute;
 use Server\CoreBase\SwooleException;
 use Server\Pack\IPack;
 
@@ -18,11 +19,13 @@ class JsonPack implements IPack {
 
     // 解包
     public function unPack($data) {
-        $value = json_decode($data);
-        if (empty($value)) {
-            throw new SwooleException('json unPack 失败');
+        $data = json_decode($data);
+        if (empty($data)) {
+            throw new SwooleException('解包出错');
         }
 
-        return $value;
+        (new NormalRoute())->handleClientData($data);
+
+        return $data;
     }
 }

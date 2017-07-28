@@ -8,10 +8,7 @@
 
 namespace app\Controllers;
 
-use app\Models\TaskDataModel;
-use Server\CoreBase\Controller;
-
-class HttpController extends Controller {
+class Http extends BaseController {
 
     /**
      * 测试方法
