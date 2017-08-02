@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swoole WebSocket Demo</title>
+    <link rel="stylesheet" href="/websocket/main.css">
+</head>
+<body>
+<h1 id="title">Swoole WebSocket Demo</h1>
+
+<!-- 加入房间页面 -->
+<div id="page_1">
+    <h3>加入房间</h3>
+    <input type="text" id="room" placeholder="输入房间号" />
+    <button type="button" id="join_btn">加入房间</button>
+</div>
+
+
+<!-- 聊天页面 -->
+<div id="page_2">
+    <ul class="chat_list"></ul>
+
+    <div class="action_btn">
+        <button type="button" id="leave_btn">离开直播</button>
+        <button type="button" id="gift_btn">送礼</button>
+        <button type="button" id="bullet_btn">弹幕</button>
+        <button type="button" id="band_btn">禁言</button>
+        <button type="button" id="praise_btn">点赞</button>
+        <button type="button" id="share_btn">分享</button>
+    </div>
+
+    <div class="send_msg">
+        <textarea id="send_val" placeholder="发送内容"></textarea>
+        <button type="button" id="send_btn">发送消息</button>
+    </div>
+</div>
+
+
+
+<!--<button type="button" class="join" data-id="1">加入房间1</button>-->
+<!--<button type="button" class="join" data-id="2">加入房间2</button>-->
+<!--<button type="button" id="send">发送信息</button>-->
+
+<script src="https://cdn.bootcss.com/jquery/2.0.1/jquery.min.js"></script>
+<script src="/websocket/main.js"></script>
+</body>
+</html>

@@ -52,11 +52,21 @@ class WebSocket extends Controller {
             'room_id' => $roomId
         ]);
 
-        // 向当前房间所有人发送通知
+        $data = [
+            'msg'    => '我们倡导绿色聊天',
+            'type'   => 'system',
+            'action' => 'join',
+            'user'   => $user
+        ];
+
+        // 通知当前客户端
+        $this->send($data, false);
+
+        // 通知其他人
         $this->sendToGroup($roomId, [
-            'msg'  => '新用户加入房间',
-            'type' => 'system',
-            'user' => $user
+            'msg'   => '用户加入房间',
+            'type'  => 'system',
+            'user'  => $user
         ]);
     }
 

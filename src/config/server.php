@@ -1,40 +1,31 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: zhangjincheng
- * Date: 16-7-14
- * Time: 下午1:58
+ * 服务启动配置信息
+ * @author: Gene
  */
 
-/**
- * http服务器设置
- */
+// http服务器配置信息
 $config['http_server']['enable'] = true;
 $config['http_server']['socket'] = '0.0.0.0';
 $config['http_server']['port'] = 8081;
 
-/**
- * 是否启用websocket
- */
+// websocket配置信息
 $config['websocket']['enable'] = true;
 // WEBSOCKET_OPCODE_TEXT = 0x1; // UTF-8文本字符数据
 // WEBSOCKET_OPCODE_BINARY = 0x2; // 二进制数据
 $config['websocket']['opcode'] = WEBSOCKET_OPCODE_TEXT;
 
-/**
- * tcp设置
- */
+
+// tcp配置信息
 $config['tcp']['enable'] = true;
 $config['tcp']['socket'] = '0.0.0.0';
 $config['tcp']['port'] = 9093;
 
-/**
- * 服务器设置
- */
+
+// 服务器配置
 $config['server']['dispatch_port'] = 9991;
 $config['server']['dispatch_udp_port'] = 9992;
 $config['server']['send_use_task_num'] = 20;
-
 // 封装器处理类  \Server\Pack\JsonPack
 $config['server']['pack_tool'] = 'JsonPack';
 // 路由器处理类  \Server\Route\NormalRoute
