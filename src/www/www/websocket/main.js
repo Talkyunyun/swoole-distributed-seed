@@ -28,6 +28,16 @@ $(function() {
         ws.send(JSON.stringify(data));
     });
 
+    // 离开房间
+    $('#leave_btn').click(function() {
+        data.method_name = 'leave';
+
+        ws.send(JSON.stringify(data));
+
+        $('#page_2').hide();
+        $('#page_1').show();
+    });
+
 
     // 消息监听
     ws.onmessage = function(e) {
@@ -39,6 +49,14 @@ $(function() {
             }
         }
         console.log('接收到消息:', data);
+
+        if (data.type == 'system') {
+            var html = '<li><span>系统消息:</span><p>' +data.msg+ '</p></li>';
+        } else {
+            var html = '<li><span>' +data.user.name+ ':</span><p>' +data.msg+ '</p></li>';
+        }
+
+        $('.chat_list').append(html);
     }
 
     ws.onclose = function(e) {

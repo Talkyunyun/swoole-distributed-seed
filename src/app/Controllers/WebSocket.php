@@ -74,7 +74,6 @@ class WebSocket extends Controller {
     // 发送消息
     public function message() {
         $msg = $this->client_data->msg;
-
         $user = yield $this->_getUser($this->uid);
 
         $this->sendToGroup($user['room_id'], [
@@ -82,6 +81,19 @@ class WebSocket extends Controller {
             'type' => 'user',
             'user' => $user
         ]);
+    }
+
+    // 离开房间
+    public function leave() {
+        $user = yield $this->_getUser($this->uid);
+
+        $this->sendToGroup($user['room_id'], [
+            'msg' => '用户离开房间',
+            'type'=> 'system'
+        ], false);
+
+        $this->removeFromGroup($user['id'], $user['room_id']);
+        $this->destroy();
     }
 
 
